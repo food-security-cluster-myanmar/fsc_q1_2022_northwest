@@ -1,0 +1,25 @@
+"0","fsc_nw %>%  
+  filter(activity_red == ""food distribution"" & new_beneficiaries > 0) %>% 
+  mutate(year = year(date)) %>% 
+  select(usd_person_bin, beneficiaries, year) %>% 
+  rbind(fsc_2021 %>%
+          filter(activity_red == ""food distribution"" & unique_beneficiaries == ""Yes"") %>% 
+          mutate(year = year(date)) %>% 
+          select(usd_person_bin, beneficiaries, year)) %>% 
+  filter(!is.na(usd_person_bin)) %>%  
+  mutate(year = as.character(year)) %>% 
+  group_by(year, usd_person_bin) %>% 
+  summarise(beneficiaries = sum(beneficiaries)) %>% 
+  group_by(year) %>% 
+  mutate(pc_ben = beneficiaries / sum(beneficiaries), 
+         usd_person_bin = fct_rev(usd_person_bin)) %>%
+  ggplot(aes(y = usd_person_bin, x = pc_ben, fill = year)) + 
+  geom_col(position = ""dodge"", width = .8) +
+  scale_x_continuous(labels = percent_format(accuracy = 1), breaks = seq(0, 1, .1)) + 
+  scale_fill_viridis_d(option = ""cividis"", guide = guide_legend(reverse = TRUE), direction = -1) +
+  labs(x = ""% of beneficiaries"", y = """", fill = """", 
+       title = ""Comparison between food distribution cash transfer values"", 
+       subtitle = ""2021 vs 2022/Q1"")
+"
+"2","`summarise()` has grouped output by 'year'. You can override using the `.groups` argument.
+"

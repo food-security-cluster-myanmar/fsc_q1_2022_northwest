@@ -1,0 +1,17 @@
+"0","fsc_nw %>% 
+  mutate(agricultural_activity = ifelse(activity_red %in% c(""crop, vegetable and seed kits"", 
+                                                            ""FFS and farmer training"", 
+                                                            ""IGA and small grants"", 
+                                                            ""livestock kits""), ""yes"", ""no"")) %>% 
+  filter(agricultural_activity == ""yes"") %>%  
+  group_by(state, activity_red) %>% 
+  summarise(beneficiaries = sum(beneficiaries)) %>% 
+  ggplot(aes(x = state, 
+             y = beneficiaries, fill = activity_red)) + 
+  geom_col() + 
+  geom_text(data = ag_labels, aes(label = comma(beneficiaries), fill = NULL), size = 3, vjust = -.3) + 
+  labs(x = """", y = ""Beneficiary frequencies"", fill = """", 
+       title = ""Breakdown of beneficiaries of agricultural activities in 2022/Q1"")
+"
+"2","`summarise()` has grouped output by 'state'. You can override using the `.groups` argument.
+"

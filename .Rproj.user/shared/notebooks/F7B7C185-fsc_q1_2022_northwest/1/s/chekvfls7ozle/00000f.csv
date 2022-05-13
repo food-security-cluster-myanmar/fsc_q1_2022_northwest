@@ -1,0 +1,26 @@
+"0","fsc_nw %>% 
+  filter(!is.na(delivery_modality)) %>% 
+  mutate(delivery_modality = case_when(str_detect(delivery_modality, ""Hybrid"") ~ ""Hybrid"", 
+                                       str_detect(delivery_modality, ""Service"") ~ ""Service delivery"", 
+                                       TRUE ~ delivery_modality)) %>% 
+  group_by(activity_red, delivery_modality) %>% 
+  summarise(beneficiaries = sum(new_beneficiaries)) %>% 
+  pivot_wider(names_from = delivery_modality, values_from = beneficiaries) %>% 
+  adorn_percentages(""row"") %>% 
+  adorn_pct_formatting() %>% 
+  left_join(fsc_nw %>%
+          filter(!is.na(delivery_modality)) %>%
+          mutate(delivery_modality = case_when(str_detect(delivery_modality, ""Hybrid"") ~ ""Hybrid"", 
+                                       str_detect(delivery_modality, ""Service"") ~ ""Service delivery"", 
+                                       TRUE ~ delivery_modality)) %>%
+          group_by(activity_red) %>%
+          summarise(Beneficiaries = sum(new_beneficiaries)), 
+          by = ""activity_red"") %>%
+  arrange(desc(Beneficiaries))%>% 
+  rename(Activity = activity_red) %>% 
+  mutate_at(vars(`In-kind`, `Service delivery`, `CBT/CVA`, `Hybrid`), ~recode(., ""-"" = NA_character_)) %>% 
+  kable(caption = ""Percentage of beneficiaries reached by activity and delivery modality"", format.args = list(big.mark = "","")) %>% 
+  kable_classic_2(""striped"")
+"
+"2","`summarise()` has grouped output by 'activity_red'. You can override using the `.groups` argument.
+"
