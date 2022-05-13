@@ -236,10 +236,10 @@
 "0","                           ""southeast"")) "
 "2","[1mRows: [22m[34m2116[39m [1mColumns: [22m[34m60[39m
 "
-"2","[36m--[39m [1mColumn specification[22m [36m------------------------------------------------------------------------------------------------------------------------[39m
+"2","[36m--[39m [1mColumn specification[22m [36m-----------------------------------------------------------------------------------------------------[39m
 [1mDelimiter:[22m "",""
-[31mchr[39m (42): month_of_implementation, donor, reporting_organization_type, implementing_partner_type, state_region, township, village_tract_town...
-[32mdbl[39m (17): quantity, total_value, value_per_household, value_per_individual, value_per_household_usd, number_child_male, number_child_female,...
+[31mchr[39m (42): month_of_implementation, donor, reporting_organization_type, implementing_partner_type, state_region, township,...
+[32mdbl[39m (17): quantity, total_value, value_per_household, value_per_individual, value_per_household_usd, number_child_male, n...
 [33mlgl[39m  (1): admin2_pcode
 "
 "2","
@@ -254,10 +254,10 @@
 "0","  left_join(pcode4 %>% distinct(admin1_pcode, state), by = ""state"")"
 "2","[1mRows: [22m[34m330[39m [1mColumns: [22m[34m30[39m
 "
-"2","[36m--[39m [1mColumn specification[22m [36m------------------------------------------------------------------------------------------------------------------------[39m
+"2","[36m--[39m [1mColumn specification[22m [36m-----------------------------------------------------------------------------------------------------[39m
 [1mDelimiter:[22m "",""
 [31mchr[39m  (6): state, admin1_pcode, district, township, admin3_pcode, group
-[32mdbl[39m (24): population_2021_proj, fs_pin, fs_targeted, battles, explosions_remote_violence, protests_and_riots, strategic_developments, violen...
+[32mdbl[39m (24): population_2021_proj, fs_pin, fs_targeted, battles, explosions_remote_violence, protests_and_riots, strategic_d...
 "
 "2","
 [36mi[39m Use [38;5;235m[48;5;253m[38;5;235m[48;5;253m`spec()`[48;5;253m[38;5;235m[49m[39m to retrieve the full column specification for this data.
@@ -364,10 +364,10 @@
 "0","                           ""southeast"")) "
 "2","[1mRows: [22m[34m16041[39m [1mColumns: [22m[34m72[39m
 "
-"2","[36m--[39m [1mColumn specification[22m [36m------------------------------------------------------------------------------------------------------------------------[39m
+"2","[36m--[39m [1mColumn specification[22m [36m-----------------------------------------------------------------------------------------------------[39m
 [1mDelimiter:[22m "",""
-[31mchr[39m  (46): month_of_implementation, donor, reporting_organization_type, implementing_partner_type, state, township, village_ward_town, camp,...
-[32mdbl[39m  (25): quantity_for_in_kind_assistance, value_per_household, value_per_household_usd, total_value_usd, total_value_mmk, child_male, chil...
+[31mchr[39m  (46): month_of_implementation, donor, reporting_organization_type, implementing_partner_type, state, township, villa...
+[32mdbl[39m  (25): quantity_for_in_kind_assistance, value_per_household, value_per_household_usd, total_value_usd, total_value_mm...
 [34mdate[39m  (1): date
 "
 "2","
@@ -383,6 +383,8 @@
 "0","        admin3_pcode = TS_PCODE) %>% "
 "0"," mutate(admin3_pcode = ifelse(str_detect(township, ""Hlaingtharya""), ""MMR013008"", admin3_pcode))"
 "0",""
+"0",""
+"0","# creating specific data frames for each hub"
 "0","fsc_nw <- fsc %>% filter(hub == ""northwest"")"
 "0",""
 "0","fsc_2021_nw <- fsc_2021 %>%  filter(hub == ""northwest"")"

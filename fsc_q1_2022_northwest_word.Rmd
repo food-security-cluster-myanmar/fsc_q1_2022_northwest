@@ -330,6 +330,8 @@ pcode3_shape <- st_read("./mmr_polbnda_adm3_mimu_250k/mmr_polbnda_adm3_mimu_250k
         admin3_pcode = TS_PCODE) %>% 
  mutate(admin3_pcode = ifelse(str_detect(township, "Hlaingtharya"), "MMR013008", admin3_pcode))
 
+
+# creating specific data frames for each hub
 fsc_nw <- fsc %>% filter(hub == "northwest")
 
 fsc_2021_nw <- fsc_2021 %>%  filter(hub == "northwest")
@@ -349,7 +351,7 @@ To recall, the Food Security Cluster's strategic objectives for 2022 are:
 * SO3: Restore, protect and improve livelihoods and resilience 
 
 ```{r beneficiaries-by-so}
-fsc %>% 
+fsc_nw %>% 
   sum_ben2(strat_obj, humanitarian_or_development) %>% 
   ungroup() %>%
   pivot_wider(names_from = humanitarian_or_development, values_from = beneficiaries, values_fill = 0) %>% 
@@ -361,7 +363,7 @@ fsc %>%
   # kable(caption = "2022/Q1 beneficiaries by strategic objective", format.args = list(big.mark = ",")) %>% 
   # kable_classic_2("striped", full_width = FALSE)
 
-
+# remember that kable does not work in word
 ```
 
 <br>
@@ -369,7 +371,7 @@ fsc %>%
 In terms of activities, the number of beneficiaries reached is heavily skewed towards food distributions. More than 95% of beneficiaries in 2022/Q1 have been reached by this activity. 
 
 ```{r table-beneficiaries-activity}
-fsc %>%  
+fsc_nw %>%  
   mutate(strat_obj = str_to_upper(strat_obj)) %>% 
   sum_ben2(strat_obj, activity_red) %>% 
   arrange(desc(beneficiaries)) %>% 
@@ -388,7 +390,7 @@ fsc %>%
 57% of beneficiaries were reached by activities where nutrition was mainstreamed. This is highly encouraging. As the year progresses, it will be important to collect more details about how exactly nutrition has been mainstreamed so that coordination with the Nutrition Cluster may be improved. 
 
 ```{r table-nutrition-mainstreaming}
-fsc %>% 
+fsc_nw %>% 
   mutate(strat_obj = str_to_upper(strat_obj)) %>% 
   mutate(was_nutrition_mainstreamed_in_activity = ifelse(is.na(was_nutrition_mainstreamed_in_activity), 
                                                          "No", was_nutrition_mainstreamed_in_activity), 
@@ -464,7 +466,7 @@ fsc_nw %>%
                filter(state %in% c("Sagaing", "Chin", "Rakhine", "Magway")) %>% 
                group_by(state, admin1_pcode) %>% 
                summarise(target = round(sum(fs_targeted, na.rm = TRUE)), 
-                         beneficiaries_2021 = sum(beneficiaries_2021, na.rm = TRUE)), 
+                         beneficiaries_2021 = sum(beneficiaries_2021, na.rm = TRUE), .groups = "drop"), 
              by = c("admin1_pcode", "state")) %>% 
   mutate(state = fct_reorder(state, -beneficiaries), 
          pc_reached = round(beneficiaries / target * 100, digits = 2)) %>% 
@@ -713,7 +715,7 @@ fsc_nw %>%
                                        str_detect(delivery_modality, "Service") ~ "Service delivery", 
                                        TRUE ~ delivery_modality)) %>% 
   group_by(activity_red, delivery_modality) %>% 
-  summarise(beneficiaries = sum(new_beneficiaries)) %>% 
+  summarise(beneficiaries = sum(new_beneficiaries), .groups = "drop") %>% 
   pivot_wider(names_from = delivery_modality, values_from = beneficiaries) %>% 
   adorn_percentages("row") %>% 
   adorn_pct_formatting() %>% 
@@ -1354,7 +1356,7 @@ fsc_nw %>%
                            "beneficiaries: ", comma(beneficiaries, accuracy = 1)))) + 
   geom_point(aes(size = beneficiaries), alpha = .7) + 
   scale_x_continuous(trans = "log", labels = comma, breaks = c(0, 100, 300, 1000, 3000, 10000, 30000, 100000, 300000)) +
-  scale_y_continuous(breaks = seq(0, 25, 5)) +
+  scale_y_continuous() +
   labs(x = "Number of beneficiaries",
        y = "Number of townships",
        title = "Plot of beneficiaries and townships reached, by implementing partner") +

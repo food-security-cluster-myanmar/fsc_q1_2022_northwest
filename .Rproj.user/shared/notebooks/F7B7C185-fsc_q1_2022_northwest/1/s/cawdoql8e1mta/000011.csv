@@ -1,0 +1,15 @@
+"0","# to determine how many beneficaries were copy/pasted
+fsc_disagg %>%
+  filter(new_beneficiaries > 0) %>% 
+  mutate(pc_disagg = ben_sub / beneficiaries) %>% 
+  group_by(org_code, disagg) %>% 
+  summarise(mean = mean(pc_disagg), 
+            sd = sd(pc_disagg, na.rm = TRUE),
+            ben_sub = sum(ben_sub, na.rm = TRUE)) %>% 
+  mutate(cat = ifelse(sd >= .05, ""real"", ""fake"")) %>%
+  group_by(cat) %>% 
+  summarise(beneficiaries = sum(ben_sub)) %>% 
+  mutate(pc = beneficiaries / sum(beneficiaries))
+"
+"2","`summarise()` has grouped output by 'org_code'. You can override using the `.groups` argument.
+"

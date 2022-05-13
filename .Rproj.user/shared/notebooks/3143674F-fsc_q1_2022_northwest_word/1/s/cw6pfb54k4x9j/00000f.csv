@@ -1,0 +1,26 @@
+"0","fsc %>% 
+  sum_ben2(strat_obj, humanitarian_or_development) %>% 
+  ungroup() %>%
+  pivot_wider(names_from = humanitarian_or_development, values_from = beneficiaries, values_fill = 0) %>% 
+  mutate(strat_obj = fct_relevel(strat_obj, levels = c(""so_1"", ""so_2"", ""so_3"")), 
+         Total = Development + Humanitarian, 
+         strat_obj = str_to_upper(strat_obj)) %>%
+  adorn_totals(""row"") %>% 
+  pander(caption = ""2022/Q1 beneficiaries by strategic objective"")
+"
+"1","
+----------------------------------------------------
+ strat_obj   Humanitarian   Development     Total   
+----------- -------------- ------------- -----------
+   SO_1        324,919           0         324,919  
+
+   SO_2       1,839,902          0        1,839,902 
+
+   SO_3         38,589        27,218       65,807   
+
+   Total      2,203,410       27,218      2,230,628 
+----------------------------------------------------
+
+Table: 2022/Q1 beneficiaries by strategic objective
+
+"

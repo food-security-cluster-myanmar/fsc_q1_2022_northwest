@@ -1,0 +1,10 @@
+"0","avg_transfer_value %>%  
+  kable(caption = ""Average value (USD) of household package values per activity"", 
+        format.args = list(big.mark = "","")) %>% 
+  kable_classic_2(lightable_options = ""striped"") %>% 
+  column_spec(4, color = ""white"", background = spec_color(avg_transfer_value$avg_transfer_value[1:7], 
+                                                          end = 0.8, direction = -1)) %>%
+  footnote(general = ""Only households which were reached by cash, hybrid or voucher modalities are included"", 
+           general_title = """")
+"
+"2","Warning: The number of provided values in background does not equal to the number of rows. "

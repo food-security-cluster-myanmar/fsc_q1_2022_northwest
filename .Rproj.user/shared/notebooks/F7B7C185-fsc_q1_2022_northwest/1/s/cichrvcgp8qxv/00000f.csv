@@ -1,0 +1,21 @@
+"0","fsc_disagg %>% 
+  filter(new_beneficiaries > 0) %>% 
+  mutate(pc_disagg = ben_sub / beneficiaries) %>% 
+  group_by(org_code, disagg) %>% 
+  summarise(mean = mean(pc_disagg), 
+            sd = sd(pc_disagg, na.rm = TRUE),
+            ben_sub = sum(ben_sub, na.rm = TRUE)) %>% 
+  mutate(cat = ifelse(sd >= .05, ""real"", ""fake"")) %>% 
+  filter(!is.na(cat)) %>% 
+  # group_by(cat) %>% 
+  # summarise(ben = sum(ben_sub)) %>%
+  # mutate(pc = ben / sum(ben))
+  ggplot(aes(x = sd)) +
+  geom_histogram() + 
+  scale_x_continuous(labels = percent_format(accuracy = 1)) + 
+  labs(x = ""Percentage difference from group mean"", 
+       title = ""Histogram of standard deviations across beneficiary disaggregations"", 
+       subtitle = ""The lower the standard deviation, the more likely to be copy/pasted"")
+"
+"2","`summarise()` has grouped output by 'org_code'. You can override using the `.groups` argument.
+"
