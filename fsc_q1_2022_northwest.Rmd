@@ -413,9 +413,11 @@ fsc_nw %>%
 In terms of activities, the number of beneficiaries reached is heavily skewed towards food distributions. More than 95% of beneficiaries in 2022/Q1 have been reached by this activity. 
 
 ```{r table-beneficiaries-activity}
-fsc_nw %>%  
+fsc %>%  
+  filter(hub == "southeast") %>% 
   mutate(strat_obj = str_to_upper(strat_obj)) %>% 
-  sum_ben2(strat_obj, activity_red) %>% 
+  sum_ben2(strat_obj, activity_red) %>%
+  rbind(strat_obj = "")
   arrange(desc(beneficiaries)) %>% 
   pivot_wider(names_from = strat_obj, values_from = beneficiaries, values_fill = 0, names_prefix = "ben_") %>% 
   mutate(Total = ben_SO_1 + ben_SO_2 + ben_SO_3, 

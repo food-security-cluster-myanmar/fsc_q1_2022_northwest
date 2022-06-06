@@ -445,6 +445,8 @@ fsc_nw %>%
        subtitle = "and percentage of target reached") 
 
 # ggsave("by_state_q1_2022.png", dpi = 300, height = 5, width = 8, units = "in")  
+
+
 ```
 
 
@@ -478,6 +480,44 @@ fsc_nw %>%
   pander(caption = "Skew in Q1 2022 geographic reach, comparison with 2021 data")
   # kable(caption = "Skew in Q1 2022 geographic reach, comparison with 2021 data", format.args = list(big.mark = ",")) %>%
   # kable_classic_2("striped")
+```
+
+```{r include=FALSE, eval=FALSE}
+
+# helping aung look at code 
+fsc_ne <- fsc %>% filter(hub == "northeast")
+
+pin %>% filter(state %in% c("Kachin", "Shan (East)", "Shan (South)", "Shan (North)")) %>% 
+  group_by(state) %>% 
+  summarise(beneficiaries_2021 = sum(beneficiaries_2021))
+
+fsc_2021 %>% 
+  filter(state %in% c("Kachin", "Shan (East)", "Shan (South)", "Shan (North)") & 
+           unique_beneficiaries == "Yes") %>% 
+  group_by(state) %>% 
+  summarise(beneficiaries_2021 = sum(beneficiaries))
+
+fsc_ne %>% 
+  group_by(state) %>% 
+  summarise(beneficiaries = sum(new_beneficiaries)) %>% 
+  left_join(fsc_2021 %>%
+              filter(state %in% c("Kachin", "Shan (East)", "Shan (South)", "Shan (North)") &
+                       unique_beneficiaries == "Yes") %>%
+              group_by(state) %>%
+              summarise(beneficiaries_2021 = sum(beneficiaries)), by = "state") %>% 
+  left_join(pin %>% 
+              filter(state %in% c("Kachin", "Shan (East)", "Shan (South)", "Shan (North)")) %>% 
+              group_by(state) %>% 
+              summarise(target = round(sum(fs_targeted, na.rm = TRUE))), by = "state") %>% 
+  mutate(state = fct_reorder(state, -beneficiaries), 
+         pc_reached = round(beneficiaries / target * 100, digits = 2)) %>% 
+  mutate(pc_2022 = round(beneficiaries / sum(beneficiaries, na.rm = TRUE) * 100, digits = 2), 
+         pc_2021 = round(beneficiaries_2021 / sum(beneficiaries_2021, na.rm = TRUE) * 100, digits = 2)) %>%
+  arrange(desc(pc_2022)) %>%
+  select(State = state, Beneficiaries_2021 = beneficiaries_2021, `%_ben_2021` = pc_2021, 
+         Beneficiaries_2022 = beneficiaries, `%_ben_2022` = pc_2022, Target = target, `%_target_2022` = pc_reached) %>%
+  pander(caption = "Skew in Q1 2022 geographic reach, comparison with 2021 data")
+  
 ```
 
 

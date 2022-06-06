@@ -1,0 +1,37 @@
+"0","fsc_ne %>% 
+  group_by(state) %>% 
+  summarise(beneficiaries = sum(new_beneficiaries)) %>% 
+  left_join(fsc_2021 %>%
+              filter(state %in% c(""Kachin"", ""Shan (East)"", ""Shan (South)"", ""Shan (North)"") &
+                       unique_beneficiaries == ""Yes"") %>%
+              group_by(state) %>%
+              summarise(beneficiaries_2021 = sum(beneficiaries)), by = ""state"") %>% 
+  left_join(pin %>% 
+              filter(state %in% c(""Kachin"", ""Shan (East)"", ""Shan (South)"", ""Shan (North)"")) %>% 
+              group_by(state) %>% 
+              summarise(target = round(sum(fs_targeted, na.rm = TRUE))), by = ""state"") %>% 
+  mutate(state = fct_reorder(state, -beneficiaries), 
+         pc_reached = round(beneficiaries / target * 100, digits = 2)) %>% 
+  mutate(pc_2022 = round(beneficiaries / sum(beneficiaries, na.rm = TRUE) * 100, digits = 2), 
+         pc_2021 = round(beneficiaries_2021 / sum(beneficiaries_2021, na.rm = TRUE) * 100, digits = 2)) %>%
+  arrange(desc(pc_2022)) %>%
+  select(State = state, Beneficiaries_2021 = beneficiaries_2021, `%_ben_2021` = pc_2021, 
+         Beneficiaries_2022 = beneficiaries, `%_ben_2022` = pc_2022, Target = target, `%_target_2022` = pc_reached) %>%
+  pander(caption = ""Skew in Q1 2022 geographic reach, comparison with 2021 data"")
+"
+"1","
+------------------------------------------------------------------------------------------------------------
+    State       Beneficiaries_2021   %_ben_2021   Beneficiaries_2022   %_ben_2022   Target    %_target_2022 
+-------------- -------------------- ------------ -------------------- ------------ --------- ---------------
+    Kachin            89,818           50.19           111,630            83.9      140,243       79.6      
+
+ Shan (North)         73,103           40.85            15,662           11.77      205,091       7.64      
+
+ Shan (South)         15,511            8.67            5,490             4.13       7,290        75.31     
+
+ Shan (East)           510              0.29             275              0.21      70,000        0.39      
+------------------------------------------------------------------------------------------------------------
+
+Table: Skew in Q1 2022 geographic reach, comparison with 2021 data
+
+"

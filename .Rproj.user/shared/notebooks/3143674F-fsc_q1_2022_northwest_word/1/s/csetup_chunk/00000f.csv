@@ -87,14 +87,6 @@
 "0","         vt_town = vt_and_town_13, "
 "0","         admin4_pcode = vt_and_town_pcode_14) %>% "
 "0","  filter(!is.na(admin4_pcode))"
-"2","New names:
-* State -> State...1
-* Admin1PCODE -> Admin1PCODE...2
-* `` -> ...3
-* Admin1PCODE -> Admin1PCODE...4
-* State -> State...5
-* ...
-"
 "0"," "
 "0","villages <- read_excel(""2022_FSCMYA_5W_template.xlsx"", "
 "0","           sheet = ""GEOADMINS"") %>% "
@@ -107,40 +99,19 @@
 "0","         vt_town = vt_and_town_21, "
 "0","         admin4_pcode = vt_and_town_pcode_22) %>% "
 "0","  filter(!is.na(location))"
-"2","New names:
-* State -> State...1
-* Admin1PCODE -> Admin1PCODE...2
-* `` -> ...3
-* Admin1PCODE -> Admin1PCODE...4
-* State -> State...5
-* ...
-"
+"0",""
 "0","camps <- read_excel(""2022_FSCMYA_5W_template.xlsx"", "
 "0","           sheet = ""GEOADMINS"") %>% "
 "0","  clean_names() %>%"
 "0","  select(township = township_29, camp_name, pcode_camp = p_code_camp) %>% "
 "0","  filter(!is.na(camp_name))"
-"2","New names:
-* State -> State...1
-* Admin1PCODE -> Admin1PCODE...2
-* `` -> ...3
-* Admin1PCODE -> Admin1PCODE...4
-* State -> State...5
-* ...
-"
+"0",""
 "0","industrial_zones <- read_excel(""2022_FSCMYA_5W_template.xlsx"", "
 "0","           sheet = ""GEOADMINS"") %>% "
 "0","  clean_names() %>% "
 "0","  select(state = state_36, admin1_pcode = admin1pcode_37, industrial_zone = industrial_zones) %>%  "
 "0","  filter(!is.na(industrial_zone))"
-"2","New names:
-* State -> State...1
-* Admin1PCODE -> Admin1PCODE...2
-* `` -> ...3
-* Admin1PCODE -> Admin1PCODE...4
-* State -> State...5
-* ...
-"
+"0",""
 "0","fsc <- read_csv(""fsc_codes.csv"") %>% "
 "0","  rename_all(~str_replace_all(., ""^number_of_"", """")) %>%"
 "0","  rename_all(~str_replace_all(., ""^number_"", """")) %>%"
@@ -234,35 +205,13 @@
 "0","                           ""northwest"", "
 "0","                         state %in% c(""Kayah"", ""Kayin"", ""Mon"", ""Tanintharyi"") ~ "
 "0","                           ""southeast"")) "
-"2","[1mRows: [22m[34m2116[39m [1mColumns: [22m[34m60[39m
-"
-"2","[36m--[39m [1mColumn specification[22m [36m-----------------------------------------------------------------------------------------------------[39m
-[1mDelimiter:[22m "",""
-[31mchr[39m (42): month_of_implementation, donor, reporting_organization_type, implementing_partner_type, state_region, township,...
-[32mdbl[39m (17): quantity, total_value, value_per_household, value_per_individual, value_per_household_usd, number_child_male, n...
-[33mlgl[39m  (1): admin2_pcode
-"
-"2","
-[36mi[39m Use [38;5;235m[48;5;253m[38;5;235m[48;5;253m`spec()`[48;5;253m[38;5;235m[49m[39m to retrieve the full column specification for this data.
-[36mi[39m Specify the column types or set [38;5;235m[48;5;253m[38;5;235m[48;5;253m`show_col_types = FALSE`[48;5;253m[38;5;235m[49m[39m to quiet this message.
-"
-"2","Warning: Unknown levels in `f`: >=20"
 "0"," "
 "0","  "
 "0","pin <- read_csv(""fs_pin.csv"") %>% "
 "0","  select(-admin1_pcode) %>% "
 "0","  left_join(pcode4 %>% distinct(admin1_pcode, state), by = ""state"")"
-"2","[1mRows: [22m[34m330[39m [1mColumns: [22m[34m30[39m
-"
-"2","[36m--[39m [1mColumn specification[22m [36m-----------------------------------------------------------------------------------------------------[39m
-[1mDelimiter:[22m "",""
-[31mchr[39m  (6): state, admin1_pcode, district, township, admin3_pcode, group
-[32mdbl[39m (24): population_2021_proj, fs_pin, fs_targeted, battles, explosions_remote_violence, protests_and_riots, strategic_d...
-"
-"2","
-[36mi[39m Use [38;5;235m[48;5;253m[38;5;235m[48;5;253m`spec()`[48;5;253m[38;5;235m[49m[39m to retrieve the full column specification for this data.
-[36mi[39m Specify the column types or set [38;5;235m[48;5;253m[38;5;235m[48;5;253m`show_col_types = FALSE`[48;5;253m[38;5;235m[49m[39m to quiet this message.
-"
+"0",""
+"0",""
 "0","fsc_2021 <- read_csv(""fsc5w_2021.csv"") %>%"
 "0","  mutate(activity_new = "
 "0","           case_when(str_detect(activity_description, ""Local Chicken support"") ~"
@@ -362,19 +311,7 @@
 "0","                           ""northwest"", "
 "0","                         state %in% c(""Kayah"", ""Kayin"", ""Mon"", ""Tanintharyi"") ~ "
 "0","                           ""southeast"")) "
-"2","[1mRows: [22m[34m16041[39m [1mColumns: [22m[34m72[39m
-"
-"2","[36m--[39m [1mColumn specification[22m [36m-----------------------------------------------------------------------------------------------------[39m
-[1mDelimiter:[22m "",""
-[31mchr[39m  (46): month_of_implementation, donor, reporting_organization_type, implementing_partner_type, state, township, villa...
-[32mdbl[39m  (25): quantity_for_in_kind_assistance, value_per_household, value_per_household_usd, total_value_usd, total_value_mm...
-[34mdate[39m  (1): date
-"
-"2","
-[36mi[39m Use [38;5;235m[48;5;253m[38;5;235m[48;5;253m`spec()`[48;5;253m[38;5;235m[49m[39m to retrieve the full column specification for this data.
-[36mi[39m Specify the column types or set [38;5;235m[48;5;253m[38;5;235m[48;5;253m`show_col_types = FALSE`[48;5;253m[38;5;235m[49m[39m to quiet this message.
-"
-"2","Warning: Unknown levels in `f`: >=20"
+"0",""
 "0","# shapefiles"
 "0","pcode3_shape <- st_read(""./mmr_polbnda_adm3_mimu_250k/mmr_polbnda_adm3_mimu_250k.shp"", quiet = TRUE) %>%"
 "0","  rename(state = ST, "
